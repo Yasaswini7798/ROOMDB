@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="RoomModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="RoomModelStoreContainer">
+    <EntitySet Name="Rooms" EntityType="RoomModel.Store.Rooms" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Buildings" EntityType="RoomModel.Store.Buildings" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Addresses" EntityType="RoomModel.Store.Addresses" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Cities" EntityType="RoomModel.Store.Cities" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Countries" EntityType="RoomModel.Store.Countries" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="BuildingRoom" Association="RoomModel.Store.BuildingRoom">
+      <End Role="Building" EntitySet="Buildings" />
+      <End Role="Room" EntitySet="Rooms" />
+    </AssociationSet>
+    <AssociationSet Name="AddressBuilding" Association="RoomModel.Store.AddressBuilding">
+      <End Role="Address" EntitySet="Addresses" />
+      <End Role="Building" EntitySet="Buildings" />
+    </AssociationSet>
+    <AssociationSet Name="CountryCity" Association="RoomModel.Store.CountryCity">
+      <End Role="Country" EntitySet="Countries" />
+      <End Role="City" EntitySet="Cities" />
+    </AssociationSet>
+    <AssociationSet Name="CityAddress" Association="RoomModel.Store.CityAddress">
+      <End Role="City" EntitySet="Cities" />
+      <End Role="Address" EntitySet="Addresses" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Rooms">
+    <Key>
+      <PropertyRef Name="IdRoom" />
+    </Key>
+    <Property Name="IdRoom" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="capacity" Type="int" Nullable="false" />
+    <Property Name="enabled" Type="int" Nullable="false" />
+    <Property Name="note" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="smart" Type="int" Nullable="false" />
+    <Property Name="floor" Type="int" Nullable="false" />
+    <Property Name="BuildingIdBuilding" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Buildings">
+    <Key>
+      <PropertyRef Name="IdBuilding" />
+    </Key>
+    <Property Name="IdBuilding" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Floornumber" Type="int" Nullable="false" />
+    <Property Name="Latitude" Type="int" Nullable="false" />
+    <Property Name="Longitude" Type="int" Nullable="false" />
+    <Property Name="AddressIdAddress" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Addresses">
+    <Key>
+      <PropertyRef Name="IdAddress" />
+    </Key>
+    <Property Name="IdAddress" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Address1" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Address2" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Address3" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Postalcode" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CityCityId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Cities">
+    <Key>
+      <PropertyRef Name="CityId" />
+    </Key>
+    <Property Name="CityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CityName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CountryCountryId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Countries">
+    <Key>
+      <PropertyRef Name="CountryId" />
+    </Key>
+    <Property Name="CountryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CountryName" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <Association Name="BuildingRoom">
+    <End Role="Building" Type="RoomModel.Store.Buildings" Multiplicity="1" />
+    <End Role="Room" Type="RoomModel.Store.Rooms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Building">
+        <PropertyRef Name="IdBuilding" />
+      </Principal>
+      <Dependent Role="Room">
+        <PropertyRef Name="BuildingIdBuilding" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AddressBuilding">
+    <End Role="Address" Type="RoomModel.Store.Addresses" Multiplicity="1" />
+    <End Role="Building" Type="RoomModel.Store.Buildings" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Address">
+        <PropertyRef Name="IdAddress" />
+      </Principal>
+      <Dependent Role="Building">
+        <PropertyRef Name="AddressIdAddress" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CountryCity">
+    <End Role="Country" Type="RoomModel.Store.Countries" Multiplicity="1" />
+    <End Role="City" Type="RoomModel.Store.Cities" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Country">
+        <PropertyRef Name="CountryId" />
+      </Principal>
+      <Dependent Role="City">
+        <PropertyRef Name="CountryCountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CityAddress">
+    <End Role="City" Type="RoomModel.Store.Cities" Multiplicity="1" />
+    <End Role="Address" Type="RoomModel.Store.Addresses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="City">
+        <PropertyRef Name="CityId" />
+      </Principal>
+      <Dependent Role="Address">
+        <PropertyRef Name="CityCityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
